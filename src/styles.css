@@ -1,0 +1,138 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+@tailwind screens;
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+  border-radius: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: white;
+  border-left: 1px theme("colors.purple.700") solid;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    theme("colors.purple.700"),
+    theme("colors.teal.300")
+  );
+}
+html,
+body {
+  color: #2b2b2b;
+  overflow-x: hidden;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+a,
+button {
+  @apply subpixel-antialiased;
+}
+h1,
+.article-h1 {
+  @apply text-5xl font-bold;
+}
+
+h3 {
+  @apply text-lg font-bold;
+}
+
+input[type="submit"] {
+  @apply bg-purple-700 text-white font-bold py-2 px-4 rounded;
+}
+input[type="submit"]:hover {
+  @apply bg-purple-500 text-white font-bold py-2 px-4 rounded;
+}
+
+.bg-gradient-teal-purple {
+  background: linear-gradient(
+    90deg,
+    theme("colors.teal.700"),
+    theme("colors.purple.700")
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  text-decoration-color: theme("colors.teal.700") !important;
+}
+
+.bg-gradient-purple-teal {
+  background: linear-gradient(
+    90deg,
+    theme("colors.purple.700"),
+    theme("colors.teal.500")
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-box-decoration-break: clone;
+  text-decoration-color: theme("colors.purple.300") !important;
+}
+header {
+  margin-bottom: 3rem;
+}
+footer {
+  margin-top: 4rem;
+}
+
+footer:after {
+  content: "";
+  display: block;
+  height: 10px;
+  width: 100%;
+  background-image: linear-gradient(
+    139deg,
+    theme("colors.purple.700"),
+    theme("colors.teal.300")
+  );
+}
+
+.lead-item {
+  margin-right: 0.5em;
+  flex: 1;
+  display: flex;
+}
+.lead-item:after {
+  content: "";
+  border-bottom: dotted 1px theme("colors.purple.700");
+  flex: 1;
+}
+
+.no-interaction {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.asterisk:after {
+  content: "*";
+  color: theme("colors.purple.700");
+}
+
+.caps {
+  text-transform: capitalize;
+}
+.all-caps {
+  text-transform: uppercase;
+}
+
+html:not([data-scroll="0"]) {
+  header.main-header {
+    position: fixed;
+    top: auto;
+    @apply shadow-lg;
+  }
+}

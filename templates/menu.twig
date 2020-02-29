@@ -1,0 +1,20 @@
+{#
+{% if menu %}
+	<ul>
+		{% for item in items %}
+			<li class="{{ item.classes | join(' ') }}">
+				<a target="{{ item.target }}" href="{{ item.link }}">{{ item.title }}</a>
+				{% include "menu.twig" with {'items': item.children} %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+#}
+{% if menu %}
+	<div class="text-sm lg:flex-grow">
+		{% for item in items %}
+			<a target="{{ item.target }}" href="{{ item.link }}" class="block mt-4 lg:inline-block lg:mt-0 text-purple-200 hover:text-white mr-4 {{item.classes|join(' ')}}">{{ item.title }}</a>
+			{% include "menu.twig" with {'items': item.children} %}
+		{% endfor %}
+	</div>
+{% endif %}

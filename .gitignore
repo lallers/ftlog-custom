@@ -1,0 +1,6 @@
+vendor
+wp-content
+composer.lock
+yarn.lock
+dist
+node_modules

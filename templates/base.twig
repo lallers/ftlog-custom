@@ -1,0 +1,72 @@
+{% block html_head_container %}
+	{% include 'html-header.twig' %}
+	{% block head %}{% endblock %}
+</head>{% endblock %}<body class="{{body_class}}" data-template="base.twig">
+{% set primaryColor = "bg-purple-700" %}
+<a class="skip-link sr-only" href="#content">{{ _e( 'Skip to content') }}</a>
+<header class="main-header header {{primaryColor}}">
+	{% block header %}
+		<div class="wrapper container mx-auto">
+			<nav id="nav-main" class="nav-main flex items-center flex-wrap p-6 {{primaryColor}}" role="navigation">
+				<div class="order-first sm:text-center flex items-center flex-shrink-0 text-white md:mr-6 all-caps">
+					<h1 class="hdr-logo hidden md:flex" role="banner">
+						<a class="hdr-logo-link font-semibold text-xl tracking-tight" href="{{site.url}}" rel="home">{{site.name}}</a>
+					</h1>
+					<h1 class="hdr-logo flex md:hidden" role="banner">
+						<a class="hdr-logo-link font-semibold text-xl tracking-tight" href="{{site.url}}" rel="home">FLG</a>
+					</h1>
+				</div>
+
+				<div class="flex order-3 ml-auto">
+					<div class="order-second lg:order-last md:ml-auto mr-2">
+						<a href="#" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-purple-700 hover:bg-white">Request Appointment</a>
+					</div>
+					<div class="order-third block lg:hidden ml-auto">
+						<button class="nav-collapse-toggler flex px-3 py-2 border rounded text-purple-500 border-purple-400 hover:text-white hover:border-white">
+							<svg class="fill-current h-3 w-3" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<div class="flex flex-col order-last lg:order-2 nav-collapse-content w-full hidden flex-grow lg:flex lg:w-auto">
+					{% include "menu.twig" with {'items': menu.get_items} %}
+				</div>
+
+			</nav>
+			<!-- #nav -->
+		</div>
+	{% endblock %}
+</header>
+
+<section id="content" role="main" class="content-wrapper container mx-auto">
+	{% if title %}
+		<h1 class="bg-gradient-teal-to-purple">{{title}}</h1>
+	{% endif %}
+	<div class="wrapper {{sidebar_class}}">
+		{% block content %}
+			Sorry, no content
+		{% endblock %}
+	</div>
+	{% if sidebar %}
+		<aside class="layout-sidebar">
+			{{sidebar}}
+		</aside>
+	{% endif %}
+</section>
+
+{% block footer %}
+	{{ function('wp_footer') }}
+	<footer id="footer" class="{{primaryColor}}">
+		<div class="container mx-auto p-3 md:p-6">
+			{% include 'footer.twig' %}
+		</div>
+	</footer>
+
+
+{% endblock %}
+<script type="text/javascript" src="{{ site.theme.link }}/dist/bundle.js"></script>
+<!-- ********************* REMOVE THIS ************************ -->
+<script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
+<!----></body></html>
