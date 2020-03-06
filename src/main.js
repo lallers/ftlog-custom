@@ -3,7 +3,6 @@ import './styles.css'
 import _ from 'lodash'
 import 'jquery-validation';
 import 'jquery-mask-plugin';
-import moment from 'moment';
 jQuery(document).ready(function ($) {
     const NavToggler = $(".nav-collapse-toggler");
     const Accordions = accordions($('.collapse-toggle'));
@@ -30,7 +29,6 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         toggleModal()
         form = $('.modal form')
-        let allFields = $(":input:not(button)", form);
         $('[type="tel"]').mask('(000) 000-0000')
 
         $(":input", form).change((e) => {
@@ -62,18 +60,9 @@ jQuery(document).ready(function ($) {
 
     SubmitModal.click((e) => {
         e.preventDefault();
-        console.log($(e.target.form).validate({ debug: true }))
-        if ($(e.target.form).validate({
-            invalidHandler: function (event, validator) {
-                // 'this' refers to the form
-                var errors = validator.numberOfInvalids();
-                console.log('num of errors', errors)
-            }
-        })) {
-            console.log('IS VALID')
-        } else {
-            console.log('AINT VALID')
-        }
+        console.log($(e.target.form))
+        const test = $(e.target.form).valid();
+        console.log(test)
     })
 
 
