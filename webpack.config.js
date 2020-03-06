@@ -8,6 +8,11 @@ module.exports = {
         filename: 'bundle.js'
     },
     mode: process.env.NODE_ENV,
+    resolve: {
+        alias: {
+            jquery: "jquery/src/jquery"
+        }
+    },
     module: {
         rules: [
             {

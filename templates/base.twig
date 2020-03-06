@@ -19,7 +19,7 @@
 
 				<div class="flex order-3 ml-auto">
 					<div class="order-second lg:order-last md:ml-auto mr-2">
-						<a href="#" class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-purple-700 hover:bg-white">Request Appointment</a>
+						<a href="#" class="modal-open inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-purple-700 hover:bg-white">Request Appointment</a>
 					</div>
 					<div class="order-third block lg:hidden ml-auto">
 						<button class="nav-collapse-toggler flex px-3 py-2 border rounded text-purple-500 border-purple-400 hover:text-white hover:border-white">
@@ -63,10 +63,12 @@
 			{% include 'footer.twig' %}
 		</div>
 	</footer>
-
-
+{% endblock %}
+{% block modal %}
+	{% import 'modal.twig' as modal %}
+	{{ modal.makeModal('appointment') }}
 {% endblock %}
 <script type="text/javascript" src="{{ site.theme.link }}/dist/bundle.js"></script>
-<!-- ********************* REMOVE THIS ************************ -->
+<!-- ********************* TODO: REMOVE THIS ************************ -->
 <script type="text/javascript" src="http://localhost:35729/livereload.js"></script>
 <!----></body></html>

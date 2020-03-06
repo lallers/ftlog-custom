@@ -54,23 +54,81 @@ Timber::$dirname = array('templates', 'views');
 Timber::$autoescape = false;
 
 
-
-
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site
  * You can move this to its own file and include here via php's include("MySite.php")
  */
-class StarterSite extends Timber\Site
+class FTLOGCustom extends Timber\Site
 {
 	/** Add timber support. */
 	public function __construct()
 	{
 		add_action('after_setup_theme', array($this, 'theme_supports'));
+		add_action('init', array($this, 'register_custom_menus'));
 		add_filter('timber/context', array($this, 'add_to_context'));
 		add_filter('timber/twig', array($this, 'add_to_twig'));
 		add_action('init', array($this, 'register_post_types'));
 		add_action('init', array($this, 'register_taxonomies'));
+		add_action('customize_register', 'color_customizer');
 		parent::__construct();
+	}
+
+	// Custom color picker
+	function color_customizer($wp_customize)
+	{
+		//get_theme_mod('color_section_name')
+		$wp_customize->add_section('theme_colors_settings', array(
+			'title' => __('Theme Colors Settings', 'themeslug'),
+			'priority' => 5,
+		));
+
+		$theme_colors = array();
+
+		// Navigation Background Color
+		$theme_colors[] = array(
+			'slug' => 'color_section_name',
+			'default' => '#000000',
+			'label' => __('Color Section Title', 'themeslug')
+		);
+
+		foreach ($theme_colors as $color) {
+
+			$wp_customize->add_setting(
+				$color['slug'],
+				array(
+					'default' => $color['default'],
+					'sanitize_callback' => 'sanitize_hex_color',
+					'type' => 'option',
+					'capability' => 'edit_theme_options'
+				)
+			);
+
+			$wp_customize->add_control(
+				new WP_Customize_Color_Control(
+					$wp_customize,
+					$color['slug'],
+					array(
+						'label' => $color['label'],
+						'section' => 'theme_colors_settings',
+						'settings' => $color['slug']
+					)
+				)
+			);
+		}
+	}
+
+
+	/** Add custom menu locations */
+	function register_custom_menus()
+	{
+		register_nav_menus(
+			array(
+				'main-menu' => __('Main Menu'),
+				'footer-left' => __('Footer Left Menu'),
+				'footer-middle' => __('Footer Middle Menu'),
+				'footer-right' => __('Footer Right Menu')
+			)
+		);
 	}
 	/** This is where you can register custom post types. */
 	public function register_post_types()
@@ -90,7 +148,11 @@ class StarterSite extends Timber\Site
 		$context['foo']   = 'bar';
 		$context['stuff'] = 'I am a value set in your functions.php file';
 		$context['notes'] = 'These values are available everytime you call Timber::context();';
-		$context['menu']  = new Timber\Menu();
+		$context['menu']  = new Timber\Menu('main-menu');
+		$context['footerMenuLeft'] = new Timber\Menu('footer-left');
+		$context['footerMenuMiddle'] = new Timber\Menu('footer-middle');
+		$context['footerMenuRight'] = new Timber\Menu('footer-right');
+
 		$context['site']  = $this;
 		return $context;
 	}
@@ -172,4 +234,4 @@ class StarterSite extends Timber\Site
 	}
 }
 
-new StarterSite();
+new FTLOGCustom();

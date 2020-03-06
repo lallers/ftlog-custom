@@ -1,11 +1,23 @@
 
 import './styles.css'
 import _ from 'lodash'
-import { v4 as uuidv4 } from 'uuid'
+import 'jquery-validation';
+import 'jquery-mask-plugin';
+import moment from 'moment';
 jQuery(document).ready(function ($) {
-    const navToggler = $(".nav-collapse-toggler");
-    const navCollapsible = $(".nav-collapse-content")
-    navToggler.click((e) => {
+    const NavToggler = $(".nav-collapse-toggler");
+    const Accordions = accordions($('.collapse-toggle'));
+    const NavCollapsible = $(".nav-collapse-content")
+    const OpenModal = $('.modal-open')
+    const CloseModal = $('#form-cancel, .modal-close')
+    const SubmitModal = $('#form-submit, .modal-submit')
+    const ModalOverlay = document.querySelector('.modal-overlay')
+    let form = undefined;
+    let isValid = false;
+    let totalVals;
+    let validFields = 0;
+
+    NavToggler.click((e) => {
         e.preventDefault();
         if (navCollapsible.hasClass('block')) {
             navCollapsible.removeClass('block').addClass('hidden')
@@ -13,13 +25,149 @@ jQuery(document).ready(function ($) {
             navCollapsible.removeClass('hidden').addClass('block')
         }
     })
-    const myAccordions = accordions($('.collapse-toggle'));
-    // Listen for new scroll events, here we debounce our `storeScroll` function
-    document.addEventListener('scroll', debounce(storeScroll), { passive: true });
-    document.documentElement.dataset.header = $('.main-header').position().top + $('.main-header').outerHeight();
 
-    // Update scroll position for first time
-    storeScroll();
+    OpenModal.click((e) => {
+        e.preventDefault();
+        toggleModal()
+        form = $('.modal form')
+        let allFields = $(":input:not(button)", form);
+        $('[type="tel"]').mask('(000) 000-0000')
+
+        $(":input", form).change((e) => {
+            const target = $(e.target);
+            if (!target.valid()) {
+                if (target.siblings('.invalid-message').length === 0) {
+                    const msg = `<div class="invalid-message"></div>`
+                    target.after(msg)
+                } else {
+                    target.siblings('.invalid-message').text(m)
+                }
+            } else {
+                target.removeClass('invalid')
+                if (target.siblings().length > 0) {
+                    target.siblings('.invalid-message').empty()
+                }
+            }
+
+        })
+
+
+    });
+
+    CloseModal.click((e) => {
+        e.preventDefault();
+        form = undefined;
+        toggleModal()
+    })
+
+    SubmitModal.click((e) => {
+        e.preventDefault();
+        console.log($(e.target.form).validate({ debug: true }))
+        if ($(e.target.form).validate({
+            invalidHandler: function (event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                console.log('num of errors', errors)
+            }
+        })) {
+            console.log('IS VALID')
+        } else {
+            console.log('AINT VALID')
+        }
+    })
+
+
+
+    ModalOverlay.addEventListener('click', toggleModal)
+
+
+    // close modal when key is pressed anywhere
+    document.onkeydown = function (evt) {
+        evt = evt || window.event
+        var isEscape = false
+        if ("key" in evt) {
+            isEscape = (evt.key === "Escape" || evt.key === "Esc")
+        } else {
+            isEscape = (evt.keyCode === 27)
+        }
+        if (isEscape && document.body.classList.contains('modal-active')) {
+            form = undefined;
+            toggleModal()
+        }
+    };
+
+
+    function validateForm(type, val, cb) {
+        console.log(val, type)
+        let isValid = false;
+        let msg = "";
+        const validObjects = {
+            name: {
+                check: (nameVal) => {
+                    if (/[A-Za-z]{1,32}/g.test(nameVal)) {
+                        return true
+                    }
+                    return false
+                }
+            },
+            date: {
+                check: (dateVal) => {
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(dateVal)) {
+                        return true
+                    }
+                    return false
+                }
+            },
+            email: {
+                check: (mailVal) => {
+                    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mailVal)) {
+                        return (true)
+                    }
+                    return false
+                }
+            }
+
+        }
+
+        switch (type) {
+            case 'email':
+                isValid = validObjects.email.check(val);
+                if (!isValid) {
+                    msg = "You have entered an invalid email!"
+                }
+                break;
+            case 'name':
+                isValid = validObjects.name.check(val);
+                if (!isValid) {
+                    msg = "You have entered invalid characters in your name!"
+                }
+                break;
+            case 'date':
+                isValid = validObjects.date.check(val);
+                if (!isValid) {
+                    msg = "You have entered an invalid date!"
+                }
+                break;
+            default:
+                isValid = false
+                msg = "You have entered an invalid value!"
+                break;
+        }
+
+        return cb(isValid, msg)
+
+
+    }
+
+
+    function toggleModal() {
+        const body = document.querySelector('body')
+        const modal = document.querySelector('.modal')
+        modal.classList.toggle('opacity-0')
+        modal.classList.toggle('pointer-events-none')
+        body.classList.toggle('modal-active')
+
+    }
 
     function accordions(items) {
         _.each(items, (v, k) => {
@@ -50,49 +198,4 @@ jQuery(document).ready(function ($) {
             }
         })
     }
-    // The debounce function receives our function as a parameter
-    function debounce(fn) {
-
-        // This holds the requestAnimationFrame reference, so we can cancel it if we wish
-        let frame;
-
-        // The debounce function returns a new function that can receive a variable number of arguments
-        return (...params) => {
-
-            // If the frame variable has been defined, clear it now, and queue for next frame
-            if (frame) {
-                cancelAnimationFrame(frame);
-            }
-
-            // Queue our function call for the next frame
-            frame = requestAnimationFrame(() => {
-
-                // Call our function and pass any params we received
-                fn(...params);
-            });
-
-        }
-    };
-
-
-    // Reads out the scroll position and stores it in the data attribute
-    // so we can use it in our stylesheets
-    function storeScroll() {
-        document.documentElement.dataset.scroll = window.scrollY;
-    }
-
-
-
-
 });
-
-String.prototype.hashCode = function () {
-    var hash = 0, i, chr;
-    if (this.length === 0) return hash;
-    for (i = 0; i < this.length; i++) {
-        chr = this.charCodeAt(i);
-        hash = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-};

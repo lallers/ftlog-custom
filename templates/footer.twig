@@ -1,6 +1,11 @@
-<div class="flex items-center justify-center">
-	<div class="text-white">
-		Copyright
-		{{"now"|date('Y')}}
+{% import "footerMenus.twig" as footerMenu %}
+
+<div class="flex flex-col">
+	{{footerMenu.makeFooter(footerMenuLeft,'contact')}}
+	<div class="flex items-center justify-center">
+		<div class="text-white">
+			Copyright
+			{{"now"|date('Y')}}
+		</div>
 	</div>
 </div>
