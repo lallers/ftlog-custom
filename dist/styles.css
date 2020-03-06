@@ -67694,6 +67694,21 @@ h1,
   font-weight: 700;
 }
 
+form .invalid,
+form .invalid:focus,
+form input.error,
+form input.error:focus {
+  border-width: 1px;
+  border-color: #f56565;
+}
+
+form .invalid,
+form .invalid:focus,
+form label.error,
+form label.error:focus {
+  color: #f56565;
+}
+
 h3 {
   font-size: 1.125rem;
   font-weight: 700;

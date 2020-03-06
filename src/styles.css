@@ -45,6 +45,18 @@ h1,
   @apply text-5xl font-bold;
 }
 
+form .invalid,
+form .invalid:focus,
+form input.error,
+form input.error:focus {
+  @apply border border-red-500;
+}
+form .invalid,
+form .invalid:focus,
+form label.error,
+form label.error:focus {
+  @apply text-red-500;
+}
 h3 {
   @apply text-lg font-bold;
 }

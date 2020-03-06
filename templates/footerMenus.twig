@@ -1,0 +1,15 @@
+{% macro makeFooter(menu='',title='',idx = 0) %}
+	{% if menu %}
+		<div class="w-full lg:w-1/3 bg-white rounded text-center">
+			<h4 class="p-3 uppercase text-lg text-purple-700 font-bold menu-title">{{title}}</h4>
+			<ul>
+				{% for item in menu.items %}
+					<li class="p-4 bg-white hover:bg-purple-400 text-purple-700 hover:text-white">
+						<a target="{{ item.target }}" href="{{ item.link }}" class="{{item.classes|join(' ')}}">{{ item.title }}</a>
+						{{_self.makeFooter(item.children)}}
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+{% endmacro %}
