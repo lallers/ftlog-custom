@@ -5,7 +5,7 @@
 			<ul>
 				{% for item in menu.items %}
 					<li class="p-4 bg-white hover:bg-purple-400 text-purple-700 hover:text-white">
-						<a target="{{ item.target }}" href="{{ item.link }}" class="{{item.classes|join(' ')}}">{{ item.title }}</a>
+						<a target="{{ item.target }}" href="{{ item.link }}" class="flex justify-center {{item.classes|join(' ')}}">{{ item.title }}</a>
 						{{_self.makeFooter(item.children)}}
 					</li>
 				{% endfor %}

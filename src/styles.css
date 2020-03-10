@@ -61,6 +61,17 @@ h3 {
   @apply text-lg font-bold;
 }
 
+.nav-main a.menu-item:hover {
+  @apply shadow-lg;
+  @apply bg-purple-400;
+  color: white;
+}
+.nav-main .current-menu-item {
+  @apply text-purple-700;
+  @apply shadow-md;
+  background-color: white;
+}
+
 input[type="submit"] {
   @apply bg-purple-700 text-white font-bold py-2 px-4 rounded;
 }

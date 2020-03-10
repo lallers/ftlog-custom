@@ -3,6 +3,14 @@ import './styles.css'
 import _ from 'lodash'
 import 'jquery-validation';
 import 'jquery-mask-plugin';
+const AppSettings = {
+    breakPoints: {
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+    }
+}
 jQuery(document).ready(function ($) {
     const NavToggler = $(".nav-collapse-toggler");
     const Accordions = accordions($('.collapse-toggle'));
@@ -18,10 +26,10 @@ jQuery(document).ready(function ($) {
 
     NavToggler.click((e) => {
         e.preventDefault();
-        if (navCollapsible.hasClass('block')) {
-            navCollapsible.removeClass('block').addClass('hidden')
+        if (NavCollapsible.hasClass('block')) {
+            NavCollapsible.removeClass('block').addClass('hidden')
         } else {
-            navCollapsible.removeClass('hidden').addClass('block')
+            NavCollapsible.removeClass('hidden').addClass('block')
         }
     })
 
@@ -169,7 +177,7 @@ jQuery(document).ready(function ($) {
                 $(accrItem).addClass('hidden')
                 $(v).click((e) => {
                     e.preventDefault()
-                    if (innerWidth > '640') { console.log('too big', innerWidth); return }
+                    if (innerWidth >= AppSettings.breakPoints.md) { console.log('too big', innerWidth); return }
 
                     if ($(v).hasClass('toggled')) {
                         $(v).removeClass('toggled')
